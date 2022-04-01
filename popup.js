@@ -13,9 +13,10 @@ countAllVideosLengthButton.addEventListener('click', async () => {
 function countAllVideosLength () {
   const timeStringToSecondsNumber = timeString => {
     const [s = 0, m = 0, h = 0] = timeString.split(':').reverse()
-    return +s + m * 60 + +h * 3600
+    const result = +s + m * 60 + +h * 3600
+    return result ? result : 0
   }
-  const getTotalDuration = () => {
+  const getTotalDurationBySelectors = () => {
     // playlist:
     // '.playlist-items .ytd-thumbnail-overlay-time-status-renderer'
 
@@ -79,7 +80,7 @@ function countAllVideosLength () {
   scrollDown.then(() => {
     console.log('all readed!!!')
 
-    const totalDuration = getTotalDuration()
+    const totalDuration = getTotalDurationBySelectors()
 
     console.log(totalDuration)
     const tableOfContent = channelTable()
@@ -92,6 +93,7 @@ function countAllVideosLength () {
 
       return (
         prev +
+        /*html*/
         `<tr>
         <td>${index + 1}</td>
         <td>${title}</td>
@@ -105,7 +107,9 @@ function countAllVideosLength () {
       )
     }, '')
 
-    const tableHTML = `<div class="ytdChannelInfoBlock">
+    const tableHTML =
+      /*html*/
+      `<div class="ytdChannelInfoBlock">
     <div class="controlsAndInfoBlock">
         <button id="showHideTable">show/hide table of content</button>
         <p>total duration: ${secondsNumberToTimeString(totalDuration)}</p>
